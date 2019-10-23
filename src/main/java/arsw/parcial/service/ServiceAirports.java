@@ -20,6 +20,9 @@ public class ServiceAirports {
         String query;
         Connection.setCity(name);
         query = Connection.connection();
+        
+        
+        System.out.println("\n\n\nQUERY:\n\n"+query+"\n\n\n");
         return query;
         
     }

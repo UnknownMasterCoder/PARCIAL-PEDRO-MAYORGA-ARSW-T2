@@ -1,4 +1,3 @@
-console.log("entro");
 var air = (function () {
     return {
         mostrar: function () {
