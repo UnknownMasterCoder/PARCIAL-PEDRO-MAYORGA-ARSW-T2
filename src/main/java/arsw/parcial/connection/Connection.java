@@ -1,5 +1,8 @@
 package arsw.parcial.connection;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +19,6 @@ public class Connection {
 
     //cometari-airportsfinder-v1.p.rapidapi.com
     //http://cometari-airportsfinder-v1.p.rapidapi.com/api/airports/by-text?text=Berlin
-    
     private static final String USER_AGENT = "Mozilla/5.0";
     private static String city;
     private static String airportsFinderKey = "d6a1132c34msh746191d900fc3eap1a3744jsnf42559e541bd";
@@ -26,6 +28,18 @@ public class Connection {
 
     public static String connection() throws IOException {
 
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://cometari-airportsfinder-v1.p.rapidapi.com/api/airports/by-text?text=Berlin")
+                .get()
+                .addHeader("x-rapidapi-host", "cometari-airportsfinder-v1.p.rapidapi.com")
+                .addHeader("x-rapidapi-key", "d6a1132c34msh746191d900fc3eap1a3744jsnf42559e541bd")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+        /*
         URL obj = new URL(GET_URL);
         //obj.
         
@@ -34,17 +48,12 @@ public class Connection {
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("x-rapidapi-host", HOST);
         con.setRequestProperty("x-rapidapi-key", airportsFinderKey);
-        
-        
+         */
         // The following invocation perform the connection implicitly before getting the
         // code
+        /*
         int responseCode = con.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
-
-        
-        
-        
-        
         
         if (responseCode == HttpURLConnection.HTTP_OK) { // success
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -62,7 +71,8 @@ public class Connection {
         } else {
             System.out.println("GET request not worked");
         }
-        return null;
+        */
+        //return null;
     }
 
     public static void setCity(String c) {

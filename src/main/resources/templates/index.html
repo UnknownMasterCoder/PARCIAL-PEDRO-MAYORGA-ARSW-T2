@@ -6,11 +6,161 @@
     <title>Airport Search</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        var air = (function () {
+            var array = [];
+            return {
+                mostrar: function () {
+                    alert("Ciudad Encontrada");
+                    var city = $("#city").val();
+                    console.log(city);
+                    var valores;
+                    var info;
+
+                    $.get('/aeropuerto/' + city, function (data) {
+                        console.log(data);
+                        info = JSON.stringify(data.data, null, '\t');
+                        valores = JSON.parse(data);
+                        console.log(valores);
+
+
+                        $("#getResult2").empty();
+                        var header = '<tr><th>' + "Siglas" + "</th><th>" + "Nombre Aeropuerto" + "</th><th>" + "Ciudad" + "</th><th>" + "Pais" + "</th><th>" + "Latitud" + "</th><th>" + "Longitud" + "</th>";
+                        $("#getResult2").append(header);
+
+                        JSON.parse(data).map(function (value, index) {
+                            var toAdd = '<tr><td>' + value.code + '</td><td>' + value.name + '</td><td>' + value.city + '</td><td>' + value.countryCode + '</td></tr>' + value.location.latitude + '</td></tr>' + value.location.longitude + '</td></tr>';
+                            $("#getResult2").append(toAdd);
+                            array.push(value.location);
+                        });
+
+
+                        /*
+                        $("#getResult2").empty();
+                        JSON.parse(data).map(function (value, index) {
+                            var toAdd = '<pre>' + value.code + '</pre><pre>' + value.name + '</pre><pre>' + value.city + '</pre><pre>' + value.countryCode + '</pre><pre>'
+                            $("#getResult2").append(toAdd);
+                            array.push(value.location);
+                        });
+                        */
+
+                        /*
+
+                        $("#getResult2").empty();
+                        $("#getResult2").append("<pre>" + "Nombre Aeropuerto: " + valores[0].name + "</pre>");
+                        $("#getResult2").append("<pre>" + "Siglas: " + valores[0].code + "</pre>");
+                        $("#getResult2").append("<pre>" + "Ciudad: " + valores[0].city + "</pre>");
+                        $("#getResult2").append("<pre>" + "Pais: " + valores[0].countryCode + "</pre>");
+                        $("#getResult2").append("<pre>" + "Ubicación: " + "</pre>");
+                        $("#getResult2").append("<pre>" + "Latitud: " + valores[0].location.latitude + "</pre>");
+                        $("#getResult2").append("<pre>" + "Longitud: " + valores[0].location.longitude + "</pre>");
+                        */
+
+                        /*
+                        $("#getResult2").append("<pre>" + "Longitud: "+valores.coord.lon + "\n" + "Latitud: "+valores.coord.lat + "</pre>");
+                        $("#getResult2").append("<pre>" + "Descripcion Aeropuerto: "+valores.airport[0].description + "\n" +"Description Main: "+ valores.airport[0].main + "</pre>");
+                        $("#getResult2").append("<pre>" + "Nemocico: "+ valores.sys.country + "\n" + "Sunrise: "+valores.sys.sunrise + "</pre>");
+                        */
+                    });
+
+                },
+
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                if (document.querySelectorAll('#map').length > 0) {
+                    if (document.querySelector('html').lang)
+                        lang = document.querySelector('html').lang;
+                    else
+                        lang = 'en';
+
+                    var js_file = document.createElement('script');
+                    js_file.type = 'text/javascript';
+                    js_file.src = 'https://maps.googleapis.com/maps/api/js?callback=initMap&signed_in=true&language=' + lang;
+                    document.getElementsByTagName('head')[0].appendChild(js_file);
+                }
+            });
+
+            var map;
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: -34.397, lng: 150.644 },
+                    zoom: 8
+                });
+
+                fetch('https://raw.githubusercontent.com/jayshields/google-maps-api-template/master/markers.json')
+                    .then(function (response) { return response.json() })
+                    .then(plotMarkers);
+            }
+
+            var markers;
+            var bounds;
+
+            function plotMarkers(m) {
+                markers = [];
+                bounds = new google.maps.LatLngBounds();
+
+                m.forEach(function (marker) {
+                    var position = new google.maps.LatLng(marker.lat, marker.lng);
+
+                    markers.push(
+                        new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            animation: google.maps.Animation.DROP
+                        })
+                    );
+
+                    bounds.extend(position);
+                });
+
+                map.fitBounds(bounds);
+            }
+        })();
+    </script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #eee;
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table#t01 th {
+            background-color: #db2526;
+            color: white;
+        }
+    </style>
 
 </head>
 
@@ -35,17 +185,35 @@
                     <div class="form-group col-4">
                         <label for="inputState">Airport Information</label>
                         <div class="panel-body" id="getResult2">
-                            
+
+
+                            <table id="t01">
+                                <!--
+                                <tr>
+                                  <th scope="col">Code</th>
+                                  <th scope="col">Name</th> 
+                                  <th scope="col">City</th>
+                                  <th scope="col">Country</th>
+                                </tr>
+                                -->
+
+
+                            </table>
+
 
                         </div>
-
                     </div>
-
                 </div>
             </div>
 
+            <div id="map" style="height: 100%; display: none"></div>
+        </div>
+    </div>
+
 
 </body>
+
+
 
 
 </html>

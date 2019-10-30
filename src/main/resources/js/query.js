@@ -1,7 +1,23 @@
-console.log("entro");
+alert("Hello! I am an alert box!!");
+console.log("ASDADSADSADSADADADADADADSSADSAD");
+
+
+var x = showAir();
+
+function showAir() {
+    alert("Hello! I am an alert box!!");
+    console.log("ASDADSADSADSADADADADADADSSADSAD");
+    return "ASDSDADADAD";
+}
+
+
+
+
+
 var air = (function () {
     return {
         mostrar: function () {
+            alert("Hello! I am an alert box!!");
             var city = $("#city").val();
             console.log(city);
             var valores;
