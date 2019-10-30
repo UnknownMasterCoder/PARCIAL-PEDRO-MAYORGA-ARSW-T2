@@ -17,6 +17,7 @@ public class ServiceAirports {
     public String getAirport(String name) throws IOException {
         
         Connection con = new Connection();
+        
         String query;
         con.setCity(name);
         query = con.connection();
