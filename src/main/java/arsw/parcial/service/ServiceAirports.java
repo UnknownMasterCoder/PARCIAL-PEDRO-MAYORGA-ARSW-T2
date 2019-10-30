@@ -16,13 +16,13 @@ public class ServiceAirports {
 
     public String getAirport(String name) throws IOException {
         
-
+        Connection con = new Connection();
         String query;
-        Connection.setCity(name);
-        query = Connection.connection();
+        con.setCity(name);
+        query = con.connection();
         
         
-        System.out.println("\n\n\nQUERY:\n\n"+query+"\n\n\n");
+        System.out.println("\n\n\nQUERY:\n\n" + name + "\n\n\n");
         return query;
         
     }

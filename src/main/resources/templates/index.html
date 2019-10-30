@@ -16,14 +16,14 @@
                     alert("Ciudad Encontrada");
                     var city = $("#city").val();
                     console.log(city);
-                    var valores;
+                    var value;
                     var info;
 
                     $.get('/aeropuerto/' + city, function (data) {
                         console.log(data);
                         info = JSON.stringify(data.data, null, '\t');
-                        valores = JSON.parse(data);
-                        console.log(valores);
+                        value = JSON.parse(data);
+                        console.log(value);
 
 
                         $("#getResult2").empty();

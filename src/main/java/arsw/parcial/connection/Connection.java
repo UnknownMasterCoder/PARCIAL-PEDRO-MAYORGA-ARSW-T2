@@ -31,7 +31,7 @@ public class Connection {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://cometari-airportsfinder-v1.p.rapidapi.com/api/airports/by-text?text=Berlin")
+                .url("https://cometari-airportsfinder-v1.p.rapidapi.com/api/airports/by-text?text=" + city)
                 .get()
                 .addHeader("x-rapidapi-host", "cometari-airportsfinder-v1.p.rapidapi.com")
                 .addHeader("x-rapidapi-key", "d6a1132c34msh746191d900fc3eap1a3744jsnf42559e541bd")
